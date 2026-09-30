@@ -1,0 +1,33 @@
+================================================================================
+DEVPERSONA TRIAL, ERROR & DEBUGGING RESOLUTION LOG
+Project: TextSearcher
+Engineer: Abeer Al-Sayaari (Bibi)
+Cycle Date: 2026-10-02 16:03:40
+Standards: 2026 High-Performance Architecture
+================================================================================
+
+[STAGE 1: SCAFFOLDING & DEPENDENCY RESOLUTION]
+- [Simulated Issue]: Dependency version clash between fastapi and pydantic v1 vs v2 serializer.
+- [Resolution Path]: Upgraded model schemas to Pydantic v2 `model_config = ConfigDict(from_attributes=True)`.
+- [Status]: RESOLVED (Bibi)
+
+[STAGE 2: DATABASE MIGRATION & SQLITE LOCKING]
+- [Simulated Issue]: SQLite `OperationalError: database is locked` during concurrent seed thread.
+- [Resolution Path]: Added `connect_args={"check_same_thread": False}` and switched to WAL (Write-Ahead Logging) mode.
+- [Status]: RESOLVED (Bibi)
+
+[STAGE 3: REACTIVE CONNECTOR ERROR HANDLING]
+- [Simulated Issue]: Ingestion of malformed JSON in `payload_data` raised uncaught exception in service layer.
+- [Resolution Path]: Wrapped JSON parsing with fallback stringification inside `PipelineService.create_entity`.
+- [Status]: RESOLVED (Bibi)
+
+[STAGE 4: PLAYWRIGHT TEST FLAKINESS]
+- [Simulated Issue]: UI table assertion failed due to race condition waiting for asynchronous `/api/v1/items` fetch.
+- [Resolution Path]: Replaced hardcoded sleep with Playwright's `expect(locator).toBeVisible()` auto-retrying locator assertion.
+- [Status]: RESOLVED (Bibi)
+
+[STAGE 5: REFACTORING & CODE PURIFICATION]
+- Removed temporary print statements and cleaned redundant debug markers.
+- Aligned module boundaries with TasteSkill clean architecture standards.
+- Production readiness certified.
+================================================================================
